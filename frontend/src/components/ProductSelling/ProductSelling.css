@@ -1,0 +1,59 @@
+.card-item:hover {
+    border: 0.5px solid rgb(126, 127, 197) !important;
+    margin: -.3rem;
+}
+
+
+.card-body>a {
+    color: black;
+}
+.card-body>a:visited {
+    color: black;
+}
+.card-body>a:hover {
+    text-decoration: none;
+    color: blue;
+}
+.card-body>a:active {
+    color: blue;
+}
+
+.card-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.viewAllPrd {
+    text-align: right;
+    padding-right: 2rem;
+}
+
+.viewAllPrd>a:visited {
+    color: blue;
+}
+.viewAllPrd>a:hover {
+    text-decoration: black underline;
+    color: black;
+    transition: all 1s;
+}
+.viewAllPrd>a:active {
+    color: black;
+}
+
+.progress {
+    height: 30px;
+    border-radius: 15px;
+    background-color: #cb1c22;
+    text-align: center !important;
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 500;
+    color: #fff;
+}
+
+
+

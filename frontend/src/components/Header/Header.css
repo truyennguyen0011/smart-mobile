@@ -1,0 +1,11 @@
+.container>a:hover {
+    border: solid .5px #fff !important;
+}
+
+.navbar-nav>a:hover {
+    border: solid .5px #fff !important;
+}
+
+.navbar-nav>a>span {
+    margin-left: 6px !important;
+}

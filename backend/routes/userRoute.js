@@ -1,51 +1,51 @@
 import express from 'express';
 import User from '../models/userModel';
-import { getToken } from '../util';
+import { getToken, requestAuth } from '../util';
+import md5 from 'md5';
 
 const router = express.Router();
 
-router.post('/signin', async (req, res) => {
-    const signinUser = await User.findOne({
+router.post('/login', async (req, res) => {
+    const hashedPassword = md5(req.body.password);
+    const loginUser = await User.findOne({
         email: req.body.email,
-        password: req.body.password
+        password: hashedPassword
     });
-    if (signinUser) {
+    if (loginUser) {
         res.send({
-            _id: signinUser.id,
-            name: signinUser.name,
-            email: signinUser.email,
-            isAdmin: signinUser.isAdmin,
-            token: getToken(signinUser)
+            _id: loginUser._id,
+            fullName: loginUser.fullname,
+            email: loginUser.email,
+            isAdmin: loginUser.isAdmin,
+            token: getToken(loginUser)
         });
     } else {
-        res.status(401).send({msg: 'Invalid Email or Password'});
+        res.status(401).send({ msg: 'Invalid Email or Password' });
     }
 });
 
-router.post('/register', async (req, res) => {
-    const user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    });
-    const newUser = await user.save();
-    if (newUser) {
-        res.send({
-            _id: newUser.id,
-            name: newUser.name,
-            email: newUser.email,
-            isAdmin: newUser.isAdmin,
-            token: getToken(newUser)
+router.post('/signup', async (req, res) => {
+    try {
+        const hashedPassword = md5(req.body.password);
+
+        const user = new User({
+            password: hashedPassword,
+            fullName: req.body.fullName,
+            email: req.body.email,
+            phone: req.body.phone,
         });
-    } else {
-        res.status(401).send({msg: 'Invalid User data'});
+        const newUser = await user.save();
+        if (newUser) {
+            res.send(newUser);
+        }
+    } catch (error) {
+        res.status(401).send({ error: error, message: 'Invalid User data' });
     }
 });
 
 router.get("/createadmin", async (req, res) => {
     try {
         const user = new User({
-            username: 'admin',
             password: '123456',
             fullName: 'Admin 1',
             email: 'admin@admin.com',
