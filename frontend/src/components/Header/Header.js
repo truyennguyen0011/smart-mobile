@@ -15,15 +15,12 @@ import {
     Image,
     Container
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 
 function Header() {
     const userLogin = useSelector(state => state.userLogin);
     const { userInfo } = userLogin;
-
-    console.log(userInfo);
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg">

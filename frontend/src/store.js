@@ -5,15 +5,16 @@ import Cookie from 'js-cookie';
 import { bannerListReducer, phoneSellingListReducer, laptopSellingListReducer } from './reducers/sellingReducer';
 import { productDetailsReducer } from './reducers/productReducer';
 import { userLoginReducer, userSignupReducer } from './reducers/userReducer';
+import { cartReducer } from './reducers/cartReducers';
 
 const userInfo = Cookie.getJSON('userInfo') || null;
-
+const cartItems = Cookie.getJSON('cartItems') || [];
 
 const initialState = {
-    // cart: { cartItems, shipping: {}, payment: {} },
+    cart: { cartItems }, //, shipping: {}, payment: {} 
     userLogin: { userInfo },
 };
-console.log(initialState);
+
 const reducer = combineReducers({
     userLogin: userLoginReducer,
     userSignup: userSignupReducer,
@@ -22,7 +23,7 @@ const reducer = combineReducers({
     laptopSellingList: laptopSellingListReducer,
     // productList: productListReducer,
     productDetails: productDetailsReducer,
-
+    cart: cartReducer,
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

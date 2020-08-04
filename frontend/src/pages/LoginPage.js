@@ -18,7 +18,7 @@ function LoginPage(props) {
     console.log("login",userInfo);
     useEffect(() => {
         if (userInfo) {
-            props.history.push("/");
+            props.history.push(redirect);
         }
         return () => {
             //

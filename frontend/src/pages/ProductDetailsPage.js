@@ -4,27 +4,30 @@ import { useSelector, useDispatch } from 'react-redux';
 import { detailsProduct } from '../actions/productActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faCheckCircle, faCartPlus } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
 import DescriptionProduct from '../components/DescriptionProduct/DescriptionProduct';
 import Rating from '../components/Rating/Rating';
 
 const ProductDetailsPage = (props) => {
 
-    const [key, setKey] = useState('home');
+    const [key, setKey] = useState('description');
+    const [qty, setQty] = useState(1);
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
 
     const productDetails = useSelector(state => state.productDetails);
-    const { product, loading, error } = productDetails;
+    const { product, loading } = productDetails;
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(detailsProduct(props.match.params.id));
+
         return () => {
             //
         };
     }, []);
 
     const newProduct = { ...product };
-    console.log(newProduct.rating);
 
     const handleRating = () => {
         if (newProduct.rating >= 0 && newProduct.rating < 1) {
@@ -92,6 +95,17 @@ const ProductDetailsPage = (props) => {
 
     };
 
+    const handleQty = (e, countInStock) => {
+        const value = Number(e.target.value);
+        if (value >= 0 && value <= countInStock) {
+            setQty(value);
+        }
+    }
+
+    const handleAddToCart = () => {
+        props.history.push('/cart/' + props.match.params.id + '?qty=' + qty);
+    };
+
     return <Container>
         <Breadcrumb>
             <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
@@ -111,9 +125,9 @@ const ProductDetailsPage = (props) => {
                         }
                     </div>
                     <div className="rating pt-2 ml-3">
-                        <Link to="#">
+                        <a onClick={() => setKey(props.location.hash.split('#')[1])} href="#rating">
                             {newProduct.numReviews} đánh giá
-                        </Link>
+                        </a>
                     </div>
                 </Row>
                 <Row className="border-left border-right border-bottom border-success" xs={12}>
@@ -146,9 +160,38 @@ const ProductDetailsPage = (props) => {
                                 </Card.Body>
                             </Card>
                         </Row>
-
                         <Row xl={12} className="my-3">
-                            <Button className="ml-3" variant="danger">Mua ngay</Button>
+                            <div className="count-prd">
+                                <label>Số lượng</label>
+                                <div>
+                                    {
+                                        qty >= 2 ?
+                                            <button onClick={() => setQty(qty - 1)}>-</button> :
+                                            <button>-</button>
+                                    }
+                                    <input type="text" value={qty} onChange={(e) => handleQty(e, newProduct.countInStock)} />
+                                    {
+                                        qty < newProduct.countInStock ?
+                                            <button onClick={() => setQty(qty + 1)}>+</button> :
+                                            <button>+</button>
+                                    }
+                                </div>
+                            </div>
+                        </Row>
+                        <Row xl={12} className="my-3">
+                            <div className="count-prd">
+                                <label>Kho</label>
+                                <div>
+                                    <label>{newProduct.countInStock}</label>
+                                </div>
+                            </div>
+                        </Row>
+                        <Row xl={12} className="my-3">
+                            {
+                                newProduct.countInStock > 0 ?
+                                    <Button onClick={handleAddToCart} className="ml-3" variant="danger">Mua ngay</Button> :
+                                    <Button disabled className="ml-3" variant="danger">Mua ngay</Button>
+                            }
                             <Button className="ml-3">
                                 <FontAwesomeIcon icon={faCartPlus} />
                                 &ensp;Add to cart
@@ -163,58 +206,110 @@ const ProductDetailsPage = (props) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Màn hình</td>
-                                    <td>{newProduct.specifications.screen}</td>
-                                </tr>
-                                <tr>
-                                    <td>Card Màn hình</td>
-                                    <td>{newProduct.specifications.cardScreen}</td>
-                                </tr>
-                                <tr>
-                                    <td>CPU</td>
-                                    <td>{newProduct.specifications.cpu}</td>
-                                </tr>
-                                <tr>
-                                    <td>GPU</td>
-                                    <td>{newProduct.specifications.gpu}</td>
-                                </tr>
-                                <tr>
-                                    <td>RAM</td>
-                                    <td>{newProduct.specifications.ram}</td>
-                                </tr>
-                                <tr>
-                                    <td>ROM</td>
-                                    <td>{newProduct.specifications.rom}</td>
-                                </tr>
-                                <tr>
-                                    <td>Hệ điều hành</td>
-                                    <td>{newProduct.specifications.operatingSys}</td>
-                                </tr>
-                                <tr>
-                                    <td>Xuất xứ</td>
-                                    <td>{newProduct.specifications.origin}</td>
-                                </tr>
-                                <tr>
-                                    <td>Năm sản xuất</td>
-                                    <td>{newProduct.specifications.mfg}</td>
-                                </tr>
-                                <tr>
-                                    <td>Camera trước</td>
-                                    <td>{newProduct.specifications.camFront}</td>
-                                </tr>
-                                <tr>
-                                    <td>Camera sau</td>
-                                    <td>{newProduct.specifications.camRear}</td>
-                                </tr>
-                                <tr>
-                                    <td>Thẻ SIM</td>
-                                    <td>{newProduct.specifications.sim}</td>
-                                </tr>
-                                <tr>
-                                    <td>Dung lượng PIN</td>
-                                    <td>{newProduct.specifications.battery}</td>
-                                </tr>
+                                {
+                                    newProduct.specifications.screen ?
+                                        <tr>
+                                            <td>Màn hình</td>
+                                            <td>{newProduct.specifications.screen}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.cardScreen ?
+                                        <tr>
+                                            <td>Card Màn hình</td>
+                                            <td>{newProduct.specifications.cardScreen}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.cpu ?
+                                        <tr>
+                                            <td>CPU</td>
+                                            <td>{newProduct.specifications.cpu}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.gpu ?
+                                        <tr>
+                                            <td>GPU</td>
+                                            <td>{newProduct.specifications.gpu}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.ram ?
+                                        <tr>
+                                            <td>RAM</td>
+                                            <td>{newProduct.specifications.ram}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.rom ?
+                                        <tr>
+                                            <td>ROM</td>
+                                            <td>{newProduct.specifications.rom}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.operatingSys ?
+                                        <tr>
+                                            <td>Hệ điều hành</td>
+                                            <td>{newProduct.specifications.operatingSys}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.origin ?
+                                        <tr>
+                                            <td>Xuất xứ</td>
+                                            <td>{newProduct.specifications.origin}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.mfg ?
+                                        <tr>
+                                            <td>Năm sản xuất</td>
+                                            <td>{newProduct.specifications.mfg}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.camFront ?
+                                        <tr>
+                                            <td>Camera trước</td>
+                                            <td>{newProduct.specifications.camFront}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.camRear ?
+                                        <tr>
+                                            <td>Camera sau</td>
+                                            <td>{newProduct.specifications.camRear}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.sim ?
+                                        <tr>
+                                            <td>Thẻ SIM</td>
+                                            <td>{newProduct.specifications.sim}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
+                                {
+                                    newProduct.specifications.battery ?
+                                        <tr>
+                                            <td>Dung lượng PIN</td>
+                                            <td>{newProduct.specifications.battery}</td>
+                                        </tr> :
+                                        <tr></tr>
+                                }
                             </tbody>
                         </Table>
                     </Col>
@@ -229,7 +324,7 @@ const ProductDetailsPage = (props) => {
                         <Tab eventKey="description" title="Đặt điểm nổi bật">
                             <DescriptionProduct data={newProduct.description} />
                         </Tab>
-                        <Tab eventKey="rating" title="Nhận xét và đánh giá">
+                        <Tab name="rating" eventKey="rating" title="Nhận xét và đánh giá">
                             <Rating data={newProduct.rating} />
                         </Tab>
                     </Tabs>

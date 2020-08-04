@@ -1,30 +1,41 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { useSelector } from 'react-redux';
-import HomePage from './pages/HomePage';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import ProductDetailsPage from './pages/ProductDetailsPage';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProfilePage from './pages/ProfilePage';
+import PhonePage from './pages/PhonePage';
+import LaptopPage from './pages/LaptopPage';
+import TabletPage from './pages/TabletPage';
+import WatchPage from './pages/WatchPage';
+import AccessoryPage from './pages/AccessoryPage';
+import NotFoundPage from './pages/NotFoundPage';
+import CartPage from './pages/CartPage';
 
 function App() {
 
   return (
     <BrowserRouter>
       <Header />
-      <Route path="/" exact={true} component={HomePage} />
-      <Route path="/profile" component={ProfilePage} />
-      <Route path="/login" component={LoginPage} />
-      <Route path="/signup" component={SignupPage} />
-      <Route path="/phone/:id" component={ProductDetailsPage} />
-      <Route path="/laptop/:id" component={ProductDetailsPage} />
-      <Route path="/tablet/:id" component={ProductDetailsPage} />
-      <Route path="/watch/:id" component={ProductDetailsPage} />
-      <Route path="/accessory/:id" component={ProductDetailsPage} />
+      <main className="main">
+        <Switch>
+          <Route path="/cart" component={CartPage} />
+          <Route path="/profile" component={ProfilePage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/signup" component={SignupPage} />
+          <Route path="/phone" component={PhonePage} />
+          <Route path="/laptop" component={LaptopPage} />
+          <Route path="/tablet" component={TabletPage} />
+          <Route path="/watch" component={WatchPage} />
+          <Route path="/accessory" component={AccessoryPage} />
+          <Route path="/" exact={true} component={HomePage} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </main>
       <Footer />
     </BrowserRouter>
   );

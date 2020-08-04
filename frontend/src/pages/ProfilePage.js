@@ -1,18 +1,23 @@
 import React from 'react';
 import { Container, Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
 
 const ProfilePage = (props) => {
     const dispatch = useDispatch();
+    const userLogin = useSelector(state => state.userLogin);
+    const { userInfo } = userLogin;
 
     const handleLogout = () => {
         dispatch(logout());
         props.history.push("/");
     }
-
+console.log(userInfo);
     return <Container>
         <h3>User Profile</h3>
+        <p>
+            Hello {userInfo.fullName}
+        </p>
         <Button onClick={handleLogout}>Logout</Button>
     </Container>
 };
