@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faCheckCircle, faCartPlus } from '@fortawesome/free-solid-svg-icons';
 import DescriptionProduct from '../components/DescriptionProduct/DescriptionProduct';
 import Rating from '../components/Rating/Rating';
+import NumberFormat from 'react-number-format';
+import { addToCart } from '../actions/cartActions';
 
 const ProductDetailsPage = (props) => {
 
@@ -16,6 +18,9 @@ const ProductDetailsPage = (props) => {
 
     const productDetails = useSelector(state => state.productDetails);
     const { product, loading } = productDetails;
+
+    const userLogin = useSelector(state => state.userLogin);
+    const { userInfo } = userLogin;
 
     const dispatch = useDispatch();
 
@@ -102,11 +107,31 @@ const ProductDetailsPage = (props) => {
         }
     }
 
+    const handleBuyNow = () => {
+        dispatch(addToCart(
+            newProduct._id,
+            userInfo._id,
+            newProduct.prdImage,
+            newProduct.prdName,
+            qty,
+            newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal,
+            qty * (newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal)
+        ));
+        props.history.push('/cart');
+    };
     const handleAddToCart = () => {
-        props.history.push('/cart/' + props.match.params.id + '?qty=' + qty);
+        dispatch(addToCart(
+            newProduct._id,
+            userInfo._id,
+            newProduct.prdImage,
+            newProduct.prdName,
+            qty,
+            newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal,
+            qty * (newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal)
+        ));
     };
 
-    return <Container>
+    return <Container className="position-relative">
         <Breadcrumb>
             <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
             <Breadcrumb.Item href={"/" + props.location.pathname.split("/")[1]}>
@@ -137,11 +162,36 @@ const ProductDetailsPage = (props) => {
                     <Col xs={6} md={6} lg={3} xs={3} className="pt-3 ">
                         <Row xl={12} className="px-0">
                             <Col xs={12} md={6} lg={6} xs={5} className="price price-promo py-3">
-                                {newProduct.pricePromotion ? newProduct.pricePromotion : newProduct.priceNormal}
+                                {newProduct.pricePromotion > 0 ?
+                                    <NumberFormat
+                                        value={newProduct.pricePromotion}
+                                        displayType={'text'}
+                                        thousandSeparator={true}
+                                    />
+                                    : <NumberFormat
+                                        value={newProduct.priceNormal}
+                                        displayType={'text'}
+                                        thousandSeparator={true}
+                                    />
+                                }
+                                {"₫"}
                             </Col>
 
                             <Col xs={12} md={6} lg={6} xs={5} className="price price-nor px-0 py-3">
-                                {newProduct.pricePromotion ? newProduct.priceNormal : ''}
+                                {
+                                    newProduct.pricePromotion > 0 ?
+                                        <NumberFormat
+                                            value={newProduct.priceNormal}
+                                            displayType={'text'}
+                                            thousandSeparator={true}
+                                        />
+                                        : <NumberFormat
+                                            value={newProduct.priceNormal}
+                                            displayType={'text'}
+                                            thousandSeparator={true}
+                                        />
+                                }
+                                {"₫"}
                             </Col>
                         </Row>
 
@@ -189,10 +239,10 @@ const ProductDetailsPage = (props) => {
                         <Row xl={12} className="my-3">
                             {
                                 newProduct.countInStock > 0 ?
-                                    <Button onClick={handleAddToCart} className="ml-3" variant="danger">Mua ngay</Button> :
+                                    <Button onClick={handleBuyNow} className="ml-3" variant="danger">Mua ngay</Button> :
                                     <Button disabled className="ml-3" variant="danger">Mua ngay</Button>
                             }
-                            <Button className="ml-3">
+                            <Button onClick={handleAddToCart} className="ml-3">
                                 <FontAwesomeIcon icon={faCartPlus} />
                                 &ensp;Add to cart
                             </Button>

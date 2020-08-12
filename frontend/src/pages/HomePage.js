@@ -32,14 +32,14 @@ const HomePage = (props) => {
         };
     }, []);
 
-    return <div>
+    return <div className="position-relative">
         <Slider data={banners} error={errorBanner} />
         {
             loadingPhoneSelling === false && phoneSelling ? <ProductSelling
                 data={phoneSelling}
                 title="Điện thoại nổi bật"
                 categoryProduct="/phone"
-            /> : (<Spinner animation="border" role="status">
+            /> : (<Spinner className="loading-center" animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>)
         }
@@ -60,7 +60,7 @@ const HomePage = (props) => {
                 data={laptopSelling}
                 title="Laptop bán chạy"
                 categoryProduct="/laptop"
-            /> : (<Spinner animation="border" role="status">
+            /> : (<Spinner className="loading-center" animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>)
         }

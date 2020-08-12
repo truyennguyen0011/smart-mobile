@@ -1,8 +1,10 @@
 import express from 'express';
 import User from '../models/userModel';
-import { getToken, requestAuth } from '../util';
+import { getToken } from '../util';
 import md5 from 'md5';
+import multer from 'multer';
 
+const upload = multer({ dest: './public/uploads/' })
 const router = express.Router();
 
 router.post('/login', async (req, res) => {
@@ -14,9 +16,8 @@ router.post('/login', async (req, res) => {
     if (loginUser) {
         res.send({
             _id: loginUser._id,
-            fullName: loginUser.fullname,
+            fullName: loginUser.fullName,
             email: loginUser.email,
-            isAdmin: loginUser.isAdmin,
             token: getToken(loginUser)
         });
     } else {
@@ -24,8 +25,10 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', upload.single('avatar'), async (req, res) => {
     try {
+        console.log(req.files);
+
         const hashedPassword = md5(req.body.password);
 
         const user = new User({
@@ -33,6 +36,7 @@ router.post('/signup', async (req, res) => {
             fullName: req.body.fullName,
             email: req.body.email,
             phone: req.body.phone,
+            avatar: req.body.avatar,
         });
         const newUser = await user.save();
         if (newUser) {
@@ -40,26 +44,6 @@ router.post('/signup', async (req, res) => {
         }
     } catch (error) {
         res.status(401).send({ error: error, message: 'Invalid User data' });
-    }
-});
-
-router.get("/createadmin", async (req, res) => {
-    try {
-        const user = new User({
-            password: '123456',
-            fullName: 'Admin 1',
-            email: 'admin@admin.com',
-            phone: '011',
-            gender: 1,
-            dateOfBirth: '1999/01/01',
-            isAdmin: true
-        });
-
-        const newUser = await user.save();
-
-        res.send(newUser);
-    } catch (error) {
-        res.send({ msg: error.message })
     }
 });
 

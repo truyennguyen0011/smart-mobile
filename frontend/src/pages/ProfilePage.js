@@ -10,7 +10,7 @@ const ProfilePage = (props) => {
 
     const handleLogout = () => {
         dispatch(logout());
-        props.history.push("/");
+        props.history.push("/login");
     }
 console.log(userInfo);
     return <Container>

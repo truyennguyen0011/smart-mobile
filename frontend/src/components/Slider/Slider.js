@@ -12,7 +12,7 @@ const SimpleSlider = (props) => {
     const { data } = props;
 
     return (
-        <Container>
+        <Container className="position-relative">
             {props.error ? <div></div> :
                 <Carousel className="my-3 bg-white" slide={true} touch={true} pause="hover" interval={3000} activeIndex={index} onSelect={handleSelect}>
                     {data ? data.map(
@@ -28,7 +28,7 @@ const SimpleSlider = (props) => {
                                 </Link>
                             </Carousel.Item>
                         )
-                    ) : (<Spinner animation="border" role="status">
+                    ) : (<Spinner className="loading-center" animation="border" role="status">
                         <span className="sr-only">Loading...</span>
                     </Spinner>)
                     }

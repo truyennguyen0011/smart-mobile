@@ -1,10 +1,20 @@
-html, body {
+body {
     width: 100%;
     height: 100%;
 }
 
 .h-400 {
     height: 400px ;
+}
+
+.t-red {
+    color: #d0021b;
+    font-weight: 700;
+}
+
+.loading-center {
+    position: absolute;
+    left: 50%;
 }
 
 /* all tag a */
@@ -67,6 +77,7 @@ ul, li {
 }
 
 .price-nor {
+    font-weight: 400;
     padding-left: -1rem !important;
     text-decoration: line-through;
     background: #f5f5f5;
@@ -233,15 +244,16 @@ ul, li {
 }
 
 
-.cart-prd-row>a {
+.cart-prd-row a {
     color: #000;
 }
 
-.cart-prd-row>label {
+.cart-prd-row label {
     cursor: text;
+    font-size: 1.2rem;
 }
 
-.cart-prd-row>button {
+.cart-prd-row button {
     outline: none;
     font-weight: 600;
     line-height: 1;
@@ -250,13 +262,13 @@ ul, li {
     color: rgba(0, 0, 0, .8);
     border-radius: 2px;
     background: transparent;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
 }
 
-.cart-prd-row>input {
-    max-width: 50px;
-    height: 32px;
+.cart-prd-row input {
+    max-width: 40px;
+    height: 30px;
     text-align: center;
     border-left: none;
     border-right: none;

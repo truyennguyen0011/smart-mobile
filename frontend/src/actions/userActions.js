@@ -18,13 +18,13 @@ const login = (email, password) => async (dispatch) => {
     }
 };
 
-const signup = (password, fullName, email, phone) => async (dispatch) => {
-    dispatch({ type: USER_SIGNUP_REQUEST, payload: { password, fullName, email, phone } });
+const signup = (password, fullName, email, phone, avatar) => async (dispatch) => {
+    dispatch({ type: USER_SIGNUP_REQUEST, payload: { password, fullName, email, phone, avatar } });
     try {
         const { data } = await Axios.post(
             "/api/users/signup",
             {
-                password, fullName, email, phone
+                password, fullName, email, phone, avatar
             }
         );
         dispatch({ type: USER_SIGNUP_SUCCESS, payload: data });

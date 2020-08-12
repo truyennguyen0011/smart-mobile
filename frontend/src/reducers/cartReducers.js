@@ -1,19 +1,29 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_GET_ITEM, CART_PUT_ITEM } from "../constants/cartConstants";
 
 function cartReducer(state = { cartItems: [] }, action) {
   switch (action.type) {
     case CART_ADD_ITEM:
-      const item = action.payload;
-      const product = state.cartItems.find(x => x.prdID === item.prdID);
-      if (product) {
-        return {
-          cartItems:
-            state.cartItems.map(x => x.prdID === product.prdID ? item : x)
-        };
+      return { ...state };
+    case CART_PUT_ITEM:
+      return {
+        ...state,
+        cartItems: state.cartItems.map(item =>
+          item._id === action.payload._id
+            ? { ...item, qty: action.payload.qty, priceTotal: action.payload.priceTotal }
+            : item,
+        )
       }
-      return { cartItems: [...state.cartItems, item] };
+    case CART_GET_ITEM:
+      return { cartItems: [...action.payload] };
     case CART_REMOVE_ITEM:
-      return { cartItems: state.cartItems.filter(x => x.prdID !== action.payload) };
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(item => {
+          if (item._id !== action.payload) {
+            return {...item}
+          }
+        })
+      };
     // case CART_SAVE_SHIPPING:
     //   return { ...state, shipping: action.payload };
     // case CART_SAVE_PAYMENT:

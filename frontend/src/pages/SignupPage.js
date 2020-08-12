@@ -14,6 +14,8 @@ function SignupPage(props) {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
 
+    const [avatar, setAvatar] = useState('');
+
     // const [gender, setPassword] = useState('');
     // const [dateOfBirth, setDateOfBirth] = useState('');
 
@@ -33,14 +35,19 @@ function SignupPage(props) {
         };
     }, [userInfo]);
 
-    const submitHandler = (e) => {
-        console.log(e);
-        e.preventDefault();
-        dispatch(signup(password, fullName, email, phone));
+    const fileSelectedHandler = (e) => {
+        setAvatar(e.target.value);
     }
-    return <Container className="pt-3 my-3 bg-white" >
+
+    const submitHandler = e => {
+        e.preventDefault();
+
+        dispatch(signup(password, fullName, email, phone, avatar));
+    }
+
+    return <Container className="pt-3 my-3 bg-white position-relative" >
         {
-            loading && (<Spinner animation="border" role="status">
+            loading && (<Spinner className="loading-center" animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>)
         }
@@ -52,7 +59,7 @@ function SignupPage(props) {
                     <Card.Body>
                         <Card.Title>Login</Card.Title>
 
-                        <Form onSubmit={submitHandler}>
+                        <Form method="POST" encType="multipart/form-data" onSubmit={submitHandler}>
                             <Form.Group controlId="formBasicEmail">
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
@@ -100,6 +107,15 @@ function SignupPage(props) {
                                     type="text"
                                     placeholder="Your phone"
                                     onChange={(e) => setPhone(e.target.value)}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="formBasicFile">
+                                <Form.Label>Avatar</Form.Label>
+                                <Form.Control
+                                    name="avatar"
+                                    type="file"
+                                    onChange={fileSelectedHandler}
                                 />
                             </Form.Group>
 

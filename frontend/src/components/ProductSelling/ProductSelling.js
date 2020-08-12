@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Card, Spinner, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import NumberFormat from 'react-number-format';
 import './ProductSelling.css';
 
 
@@ -36,11 +37,36 @@ const ProductSelling = (props) => {
                                     </Link>
                                     <Row xl={12}>
                                         <Col xl={6} className="progress">
-                                            {item.pricePromotion ? item.pricePromotion : item.priceNormal}
+                                            {item.pricePromotion > 0 ?
+                                                <NumberFormat
+                                                    value={item.pricePromotion}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                />
+                                                : <NumberFormat
+                                                    value={item.priceNormal}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                />
+                                            }
+                                            {"₫"}
                                         </Col>
                                         <Col xl={6}>
                                             <strike>
-                                                {item.pricePromotion ? item.priceNormal : ''}
+                                                {
+                                                    item.pricePromotion > 0 ?
+                                                        <NumberFormat
+                                                            value={item.priceNormal}
+                                                            displayType={'text'}
+                                                            thousandSeparator={true}
+                                                        />
+                                                        : <NumberFormat
+                                                            value={item.priceNormal}
+                                                            displayType={'text'}
+                                                            thousandSeparator={true}
+                                                        />
+                                                }
+                                                {"₫"}
                                             </strike>
                                         </Col>
                                     </Row>
