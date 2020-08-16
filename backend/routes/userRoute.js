@@ -2,9 +2,7 @@ import express from 'express';
 import User from '../models/userModel';
 import { getToken } from '../util';
 import md5 from 'md5';
-import multer from 'multer';
 
-const upload = multer({ dest: './public/uploads/' })
 const router = express.Router();
 
 router.post('/login', async (req, res) => {
@@ -18,6 +16,8 @@ router.post('/login', async (req, res) => {
             _id: loginUser._id,
             fullName: loginUser.fullName,
             email: loginUser.email,
+            avatar: loginUser.avatar,
+            phone: loginUser.phone,
             token: getToken(loginUser)
         });
     } else {
@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/signup', upload.single('avatar'), async (req, res) => {
+router.post('/signup', async (req, res) => {
     try {
         console.log(req.files);
 

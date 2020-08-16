@@ -21,7 +21,7 @@ import { useSelector } from 'react-redux';
 function Header() {
     const userLogin = useSelector(state => state.userLogin);
     const { userInfo } = userLogin;
-
+    console.log(userInfo);
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -64,7 +64,16 @@ function Header() {
                         </Nav.Link>
                         {
                             userInfo ? <Nav.Link title="Go to profile" href="/profile" className=" border border-dark">
-                                <FontAwesomeIcon size="lg" icon={faUserCircle} />
+                                {
+                                    !userInfo.avatar ?
+                                        <FontAwesomeIcon size="lg" icon={faUserCircle} /> :
+                                        <img
+                                            src={userInfo.avatar}
+                                            width="25px"
+                                            alt="avatar image"
+                                            style={{ borderRadius: "100%" }}
+                                        />
+                                }
                             </Nav.Link>
                                 : <Nav.Link title="Go to login" href="/login" className="text-uppercase font-weight-bold text-white border border-dark">
                                     LOG IN

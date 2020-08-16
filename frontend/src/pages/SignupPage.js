@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, Button, Container, Row, Card, Col, Spinner } from 'react-bootstrap';
 import { signup } from '../actions/userActions';
+import Axios from 'axios';
 
 function SignupPage(props) {
 
@@ -15,6 +16,7 @@ function SignupPage(props) {
     const [phone, setPhone] = useState('');
 
     const [avatar, setAvatar] = useState('');
+    const [uploading, setUploading] = useState(false);
 
     // const [gender, setPassword] = useState('');
     // const [dateOfBirth, setDateOfBirth] = useState('');
@@ -35,15 +37,32 @@ function SignupPage(props) {
         };
     }, [userInfo]);
 
-    const fileSelectedHandler = (e) => {
-        setAvatar(e.target.value);
-    }
-
     const submitHandler = e => {
         e.preventDefault();
 
         dispatch(signup(password, fullName, email, phone, avatar));
     }
+
+    const uploadFileHandler = (e) => {
+        const file = e.target.files[0];
+        const fd = new FormData();
+        fd.append('image', file);
+        setUploading(true);
+        Axios
+            .post('/api/uploads', fd, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            .then((response) => {
+                setAvatar(response.data);
+                setUploading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setUploading(false);
+            });
+    };
 
     return <Container className="pt-3 my-3 bg-white position-relative" >
         {
@@ -53,11 +72,11 @@ function SignupPage(props) {
         }
         {error && <div>{error}</div>}
         <Row>
-            <Col sm={4} md={4} xs={4} />
-            <Col sm={4} md={4} xs={4}>
+            <Col xl={4} sm={3} lg={3} md={3} xs={2} />
+            <Col xl={4} sm={6} lg={6} md={6} xs={8}>
                 <Card>
                     <Card.Body>
-                        <Card.Title>Login</Card.Title>
+                        <Card.Title>Signup</Card.Title>
 
                         <Form method="POST" encType="multipart/form-data" onSubmit={submitHandler}>
                             <Form.Group controlId="formBasicEmail">
@@ -115,7 +134,7 @@ function SignupPage(props) {
                                 <Form.Control
                                     name="avatar"
                                     type="file"
-                                    onChange={fileSelectedHandler}
+                                    onChange={uploadFileHandler}
                                 />
                             </Form.Group>
 
@@ -151,7 +170,7 @@ function SignupPage(props) {
                     </Card.Body>
                 </Card>
             </Col>
-            <Col sm={4} md={4} xs={4} />
+            <Col xl={4} sm={3} lg={3} md={3} xs={2} />
         </Row>
     </Container>
 }

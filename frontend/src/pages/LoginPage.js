@@ -37,8 +37,8 @@ function LoginPage(props) {
         }
         {error && <div>{error}</div>}
         <Row>
-            <Col sm={4} md={4} xs={4} />
-            <Col sm={4} md={4} xs={4}>
+            <Col xl={4} sm={3} lg={4} md={3} xs={2} />
+            <Col xl={4} sm={6} lg={4} md={6} xs={8}>
                 <Card>
                     <Card.Body>
                         <Card.Title>Login</Card.Title>
@@ -76,7 +76,7 @@ function LoginPage(props) {
                     </Card.Body>
                 </Card>
             </Col>
-            <Col sm={4} md={4} xs={4} />
+            <Col xl={4} sm={3} lg={4} md={3} xs={2} />
         </Row>
     </Container>
 }
