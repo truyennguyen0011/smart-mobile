@@ -1,5 +1,4 @@
 import Axios from "axios";
-import Cookie from "js-cookie";
 import { CART_ADD_ITEM, CART_GET_ITEM, CART_REMOVE_ITEM, CART_PUT_ITEM } from "../constants/cartConstants";
 
 const addToCart = (prdID, userID, prdImage, prdName, qty, price, priceTotal) => async (dispatch, getState) => {
@@ -30,7 +29,6 @@ const putToCart = (id, qty) => async (dispatch) => {
     dispatch({
       type: CART_PUT_ITEM, payload: data
     });
-    console.log(data);
 
   } catch (error) {
     console.log(error);

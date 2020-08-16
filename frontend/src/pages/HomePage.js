@@ -14,10 +14,10 @@ const HomePage = (props) => {
     const { banners, error: errorBanner } = bannerList;
 
     const phoneSellingList = useSelector(state => state.phoneSellingList);
-    const { phoneSelling, loading: loadingPhoneSelling, error: errorPhoneSelling } = phoneSellingList;
+    const { phoneSelling, loading: loadingPhoneSelling } = phoneSellingList;
   
     const laptopSellingList = useSelector(state => state.laptopSellingList);
-    const { laptopSelling, loading: loadingLaptopSelling, error: errorLaptopSelling } = laptopSellingList;
+    const { laptopSelling, loading: loadingLaptopSelling } = laptopSellingList;
 
 
     useEffect(() => {

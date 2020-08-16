@@ -3,15 +3,16 @@ import { Container, Breadcrumb, Row, Spinner, Col, Image, Card, Button, Table, T
 import { useSelector, useDispatch } from 'react-redux';
 import { detailsProduct } from '../actions/productActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faCheckCircle, faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCartPlus } from '@fortawesome/free-solid-svg-icons';
 import DescriptionProduct from '../components/DescriptionProduct/DescriptionProduct';
-import Rating from '../components/Rating/Rating';
+import Reviews from '../components/Reviews/Reviews';
 import NumberFormat from 'react-number-format';
 import { addToCart } from '../actions/cartActions';
+import Rating from '../components/Rating/Rating';
 
 const ProductDetailsPage = (props) => {
 
-    const [key, setKey] = useState('description');
+    const [key, setKey] = useState('rating');
     const [qty, setQty] = useState(1);
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
@@ -34,72 +35,6 @@ const ProductDetailsPage = (props) => {
 
     const newProduct = { ...product };
 
-    const handleRating = () => {
-        if (newProduct.rating >= 0 && newProduct.rating < 1) {
-            return (
-                <div>
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                    <FontAwesomeIcon icon={faStar} />
-                </div>
-            )
-        } else
-            if (newProduct.rating >= 1 && newProduct < 2) {
-                return (
-                    <div>
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                    </div>
-                )
-            } else if (newProduct.rating >= 2 && newProduct < 3) {
-                return (
-                    <div>
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                    </div>
-                )
-            } else if (newProduct.rating >= 3 && newProduct < 4) {
-                return (
-                    <div>
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                    </div>
-                )
-            } else if (newProduct.rating >= 4 && newProduct < 5) {
-                return (
-                    <div>
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon icon={faStar} />
-                    </div>
-                )
-            } else if (newProduct.rating === 5) {
-                return (
-                    <div>
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                        <FontAwesomeIcon className="checked" icon={faStar} />
-                    </div>
-                )
-            }
-
-    };
-
     const handleQty = (e, countInStock) => {
         const value = Number(e.target.value);
         if (value >= 0 && value <= countInStock) {
@@ -120,6 +55,7 @@ const ProductDetailsPage = (props) => {
         props.history.push('/cart');
     };
     const handleAddToCart = () => {
+        alert("Sản phẩm đã được thêm vào giỏ hàng của bạn!")
         dispatch(addToCart(
             newProduct._id,
             userInfo._id,
@@ -145,9 +81,7 @@ const ProductDetailsPage = (props) => {
                 <Row className="px-3 pb-3 border-bottom border-success">
                     <h3>{newProduct.prdName}</h3>
                     <div className="rating pt-2 ml-3">
-                        {
-                            handleRating()
-                        }
+                        <Rating value={newProduct.rating} />
                     </div>
                     <div className="rating pt-2 ml-3">
                         <a onClick={() => setKey(props.location.hash.split('#')[1])} href="#rating">
@@ -156,10 +90,10 @@ const ProductDetailsPage = (props) => {
                     </div>
                 </Row>
                 <Row className="border-left border-right border-bottom border-success" xs={12}>
-                    <Col xs={6} md={6} lg={4} xs={4} className="py-3">
+                    <Col sm={6} md={6} lg={4} xs={4} className="py-3">
                         <Image width="100%" src={newProduct.prdImage} />
                     </Col>
-                    <Col xs={6} md={6} lg={3} xs={3} className="pt-3 ">
+                    <Col sm={6} md={6} lg={3} xs={3} className="pt-3 ">
                         <Row xl={12} className="px-0">
                             <Col xs={12} md={6} lg={6} xs={5} className="price price-promo py-3">
                                 {newProduct.pricePromotion > 0 ?
@@ -248,7 +182,7 @@ const ProductDetailsPage = (props) => {
                             </Button>
                         </Row>
                     </Col>
-                    <Col xs={6} md={6} lg={5} xs={5}>
+                    <Col sm={6} md={6} lg={5} xs={5}>
                         <Table className="mt-3" striped bordered hover size="sm">
                             <thead>
                                 <tr>
@@ -365,7 +299,7 @@ const ProductDetailsPage = (props) => {
                     </Col>
                 </Row>
 
-                <Row className="my=3 py-3">
+                <Row sm={12} xl={12} className="my=3 py-3">
                     <Tabs
                         id="controlled-tab-example"
                         activeKey={key}
@@ -375,7 +309,7 @@ const ProductDetailsPage = (props) => {
                             <DescriptionProduct data={newProduct.description} />
                         </Tab>
                         <Tab name="rating" eventKey="rating" title="Nhận xét và đánh giá">
-                            <Rating data={newProduct.rating} />
+                            <Reviews data={newProduct} />
                         </Tab>
                     </Tabs>
                 </Row>

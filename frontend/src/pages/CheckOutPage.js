@@ -6,55 +6,22 @@ import NumberFormat from 'react-number-format';
 
 import { putToCart, removeFromCart, getToCart, addToCart } from '../actions/cartActions';
 
-const CartPage = (props) => {
+const CheckOutPage = (props) => {
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
 
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
-
-  const userID = userInfo ? userInfo._id : '';
-
-  const dispatch = useDispatch();
-
-  let count = '';
-
-  useEffect(() => {
-    if (userID) {
-      dispatch(getToCart(userID));
-    }
-  }, []);
-
-  const handleRemoveFromCart = (e) => {
-    dispatch(removeFromCart(e.target.id));
-    console.log(e.target.id);
-  }
-
-  if (cartItems) {
-    if (cartItems.length !== 0) {
-      count = cartItems.reduce((a, c) =>
-        a + c.priceTotal
-        , 0);
-    }
-  }
-
+console.log(cartItems);
   return !userInfo ?
     <Redirect to="/login" /> :
 
     <Container className="my-3">
-      <Row className="p-3">
-        <Col className="text-uppercase" lg={6}>
-          <h4 className="text-uppercase">GIỎ HÀNG CỦA BẠN</h4>
-        </Col>
-        <Col className="viewAllPrd" lg={6}>
-          <Link to="/">
-            Mua thêm sản phẩm khác
-          </Link>
-        </Col>
+      <Row className="border p-3 mx-3 bg-white">
+        <h4>Đơn Hàng</h4>
       </Row>
-
-      <Row className="mx-3 bg-white">
+      <Row className="border border-top-0 p-3 mx-3 bg-white">
         {
           !cartItems ? <Col sm={12} xl={12} className="text-center py-3"></Col> :
             cartItems.length === 0 ?
@@ -95,45 +62,12 @@ const CartPage = (props) => {
                         {"₫"}
                       </label>
                     </Col>
-                    <Col xs={4} xl={2}>
-                      {
-                        item.qty >= 2 ?
-                          <button onClick={() => dispatch(putToCart(item._id, item.qty - 1))}
-                          >-</button> :
-                          <button>-</button>
-                      }
-                      <input disabled={true} type="text" value={item.qty} />
-                      {
-                        item.qty < 10 ?
-                          <button onClick={() => dispatch(putToCart(item._id, item.qty + 1))}>+</button> :
-                          <button>+</button>
-                      }
-                      <a id={item._id} className="ml-3" onClick={handleRemoveFromCart}>Xóa</a>
-                    </Col>
                   </Row>
 
 
                 </Col>
-              )
-        }
-        {
-          !cartItems ? <Col sm={12} xl={12} className="text-center py-3"></Col> :
-            cartItems.length !== 0 ?
-              <Col className="cart-action py-3 my-3">
-                <ul>
-                  <li>
-                    <label className="mr-3"><h4>Tổng tiền:</h4></label>
-                    <span className="t-red">
-                      <NumberFormat value={count} displayType={'text'} thousandSeparator={true} />
-                      {"₫"}
-                    </span>
-                  </li>
-                </ul>
-                <Button href="/checkout" className="ml-5">Mua hàng</Button>
-              </Col>
-              : <Col sm={12} xl={12} className="text-center py-3"></Col>
-        }
+              )}
       </Row>
     </Container>;
 }
-export default CartPage;
+export default CheckOutPage;

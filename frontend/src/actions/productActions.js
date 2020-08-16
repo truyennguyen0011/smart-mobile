@@ -12,7 +12,10 @@ import {
     // PRODUCT_SAVE_FAIL,
     // PRODUCT_DELETE_REQUEST,
     // PRODUCT_DELETE_SUCCESS,
-    // PRODUCT_DELETE_FAIL
+    // PRODUCT_DELETE_FAIL,
+    PRODUCT_REVIEW_SAVE_REQUEST,
+    PRODUCT_REVIEW_SAVE_SUCCESS,
+    PRODUCT_REVIEW_SAVE_FAIL
 } from "../constants/productConstants";
 
 // const listProducts = () => async (dispatch) => {
@@ -75,5 +78,24 @@ const detailsProduct = (productId) => async (dispatch) => {
 //     }
 // };
 
-export { detailsProduct };
+const saveProductReview = (productId, reviews, token) => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_REVIEW_SAVE_REQUEST, payload: reviews });
+        const { data } = await Axios.post(
+            `/api/products/${productId}/reviews`,
+            reviews,
+            {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                },
+            }
+        );
+        dispatch({ type: PRODUCT_REVIEW_SAVE_SUCCESS, payload: data });
+    } catch (error) {
+        // report error
+        dispatch({ type: PRODUCT_REVIEW_SAVE_FAIL, payload: error.message });
+    }
+};
+
+export { detailsProduct, saveProductReview };
 // listProducts  saveProducts deleteProduct

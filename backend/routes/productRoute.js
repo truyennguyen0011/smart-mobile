@@ -14,10 +14,34 @@ router.get("/:id", async (req, res) => {
     if (product) {
         res.send(product);
     } else {
-        res.status(404).send({message: "Product not found!"})
+        res.status(404).send({ message: "Product not found!" })
     }
 });
 
+router.post('/:id/reviews', isAuth, async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    
+    if (product) {
+        const review = {
+            reviewerName: req.body.name,
+            rating: Number(req.body.rating),
+            comment: req.body.comment,
+            createdAt: req.body.createdAt,
+            updatedAt: req.body.updatedAt,
+        };
+        product.reviews.push(review);
+        product.numReviews = product.reviews.length;
+        product.rating = Math.round((product.reviews.reduce((a, c) => c.rating + a, 0) /
+            product.reviews.length) * 10 + Number.EPSILON) / 10;
+        const updatedProduct = await product.save();
+        res.status(201).send({
+            data: updatedProduct.reviews[updatedProduct.reviews.length - 1],
+            message: 'Review saved successfully.',
+        });
+    } else {
+        res.status(404).send({ message: 'Product Not Found' });
+    }
+});
 // router.post("/", isAuth, isAdmin, async (req, res) => {
 //     const product = new Product({
 //         name: req.body.name,
@@ -69,47 +93,47 @@ router.get("/:id", async (req, res) => {
 
 
 // router.get("/createproduct", async (req, res) => {
-    //     try {
-    //         const product = new Product({
-    //             prdName: "Samsung Galaxy A11",
-    //             categoryID : "5f218fe4c54c0bbf81a06a28",
-    //             prdLink: "samsung-galaxy-a11",
-    //             prdImage: "https://cdn.fptshop.com.vn/Uploads/Originals/2020/6/2/637267167456120953_SS-A11-xanh-1.png",
-    //             prdBrand: "Samsung",
-    //             pricePromotion: "3.100.000₫",
-    //             priceNormal: "3.690.000₫",
-    //             categoryName: "phone",
-    //             countInStock: 10,
-    //             description: "Perfect",
-    //             rating: 0,
-    //             numReviews: 0,
-    //             prdCreatedAt: new Date(),
-    //             prdUpdatedAt: new Date(),
-    //             specifications:
-    //             {
-    //                 screen: "6.4 inches, HD +, 720 x 1560 Pixels",
-    //                 cardScreen: "Undefine",
-    //                 cpu: "Snapdragon 450 8 nhân, 8, 1.8 GHz",
-    //                 gpu: "Adreno 506",
-    //                 ram: "3 GB",
-    //                 rom: "32 GB",
-    //                 operatingSys: "Android 10",
-    //                 origin: "Việt Nam",
-    //                 mfg: "2020",
-    //                 camFront: "8.0 MP",
-    //                 camRear: "Chính 13 MP & Phụ 5 MP, 2 MP",
-    //                 sim: "Nano SIM, 2 Sim",
-    //                 battery: "4000 mAh"
-    //             },
-    //             reviews: []
-    //         });
-    
-    //         const newProduct = await product.save();
-    
-    //         res.send({ newProduct, msg: "Created new product" });
-    //     } catch (error) {
-    //         res.send({ msg: error.message })
-    //     }
-    // });
+//     try {
+//         const product = new Product({
+//             prdName: "Samsung Galaxy A11",
+//             categoryID : "5f218fe4c54c0bbf81a06a28",
+//             prdLink: "samsung-galaxy-a11",
+//             prdImage: "https://cdn.fptshop.com.vn/Uploads/Originals/2020/6/2/637267167456120953_SS-A11-xanh-1.png",
+//             prdBrand: "Samsung",
+//             pricePromotion: "3.100.000₫",
+//             priceNormal: "3.690.000₫",
+//             categoryName: "phone",
+//             countInStock: 10,
+//             description: "Perfect",
+//             rating: 0,
+//             numReviews: 0,
+//             prdCreatedAt: new Date(),
+//             prdUpdatedAt: new Date(),
+//             specifications:
+//             {
+//                 screen: "6.4 inches, HD +, 720 x 1560 Pixels",
+//                 cardScreen: "Undefine",
+//                 cpu: "Snapdragon 450 8 nhân, 8, 1.8 GHz",
+//                 gpu: "Adreno 506",
+//                 ram: "3 GB",
+//                 rom: "32 GB",
+//                 operatingSys: "Android 10",
+//                 origin: "Việt Nam",
+//                 mfg: "2020",
+//                 camFront: "8.0 MP",
+//                 camRear: "Chính 13 MP & Phụ 5 MP, 2 MP",
+//                 sim: "Nano SIM, 2 Sim",
+//                 battery: "4000 mAh"
+//             },
+//             reviews: []
+//         });
+
+//         const newProduct = await product.save();
+
+//         res.send({ newProduct, msg: "Created new product" });
+//     } catch (error) {
+//         res.send({ msg: error.message })
+//     }
+// });
 
 export default router;

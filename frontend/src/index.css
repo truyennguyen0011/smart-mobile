@@ -4,12 +4,24 @@ body {
 }
 
 .h-400 {
-    height: 400px ;
+    height: 400px;
+}
+
+.w-100 {
+    width: 100% !important;
 }
 
 .t-red {
     color: #d0021b;
     font-weight: 700;
+}
+
+.fs-32 {
+    font-size: 32px;
+}
+
+.cl-org {
+    color: #fd9727;
 }
 
 .loading-center {
@@ -18,9 +30,11 @@ body {
 }
 
 /* all tag a */
+
 a {
     cursor: pointer;
 }
+
 a:hover {
     text-decoration: none !important;
 }
@@ -41,7 +55,7 @@ ul, li {
 } */
 
 .checked {
-    color: orange;
+    color: #fd9727;
 }
 
 .rating>a {
@@ -242,7 +256,6 @@ ul, li {
         font-size: 14px;
     }
 }
-
 
 .cart-prd-row a {
     color: #000;

@@ -15,6 +15,7 @@ import WatchPage from './pages/WatchPage';
 import AccessoryPage from './pages/AccessoryPage';
 import NotFoundPage from './pages/NotFoundPage';
 import CartPage from './pages/CartPage';
+import CheckOutPage from './pages/CheckOutPage';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
       <Header />
       <main className="main">
         <Switch>
+          <Route path="/checkout" component={CheckOutPage} />
           <Route path="/cart" component={CartPage} />
           <Route path="/profile" component={ProfilePage} />
           <Route path="/login" component={LoginPage} />
