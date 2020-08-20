@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faSearch, faMobileAlt, faLaptop, faTabletAlt,
-    faStopwatch, faKeyboard, faCartArrowDown,
+    faStopwatch, faKeyboard, faShoppingCart,
     faUserCircle
 } from '@fortawesome/free-solid-svg-icons'
 import './Header.css';
@@ -13,15 +13,36 @@ import {
     FormControl,
     Button,
     Image,
-    Container
+    Container,
+    Dropdown,
+    ButtonGroup
 } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../actions/userActions';
+import { getToCart } from '../../actions/cartActions';
 
 
-function Header() {
+function Header(props) {
     const userLogin = useSelector(state => state.userLogin);
     const { userInfo } = userLogin;
-    console.log(userInfo);
+
+    const cart = useSelector(state => state.cart);
+    const { cartItems } = cart;
+
+    const userID = userInfo ? userInfo._id : '';
+
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+    }
+
+    useEffect(() => {
+        if (userID) {
+            dispatch(getToCart(userID));
+        }
+    }, []);
+
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -59,22 +80,35 @@ function Header() {
                         </Nav.Link>
                     </Nav>
                     <Nav className="mx-2">
-                        <Nav.Link title="Go to cart" href="/cart" className="text-uppercase font-weight-bold text-white border border-dark">
-                            <FontAwesomeIcon size="lg" icon={faCartArrowDown} color="white" />
+                        <Nav.Link title="Go to cart" href="/cart" className=" position-relative text-uppercase font-weight-bold text-white border border-dark">
+                            <FontAwesomeIcon size="lg" icon={faShoppingCart} color="white" />
+                            {
+                                !cartItems ? <b></b> : cartItems.length > 0 ? <b className="cartic">{cartItems.length}</b> :
+                                <b></b>
+                            }
                         </Nav.Link>
                         {
-                            userInfo ? <Nav.Link title="Go to profile" href="/profile" className=" border border-dark">
-                                {
-                                    !userInfo.avatar ?
-                                        <FontAwesomeIcon size="lg" icon={faUserCircle} /> :
-                                        <img
-                                            src={userInfo.avatar}
-                                            width="25px"
-                                            alt="avatar image"
-                                            style={{ borderRadius: "100%" }}
-                                        />
-                                }
-                            </Nav.Link>
+                            userInfo ? <Dropdown as={ButtonGroup}>
+                                <Nav.Link title="Go to profile" href="/profile" className=" border border-dark">
+                                    {
+                                        !userInfo.avatar ?
+                                            <FontAwesomeIcon size="lg" icon={faUserCircle} /> :
+                                            <img
+                                                src={userInfo.avatar}
+                                                width="25px"
+                                                alt="avatar image"
+                                                style={{ borderRadius: "100%" }}
+                                            />
+                                    }
+                                </Nav.Link>
+
+                                <Dropdown.Toggle split variant="dark" id="dropdown-split-basic" />
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item href="/profile">Tài khoản của tôi</Dropdown.Item>
+                                    <Dropdown.Item onClick={handleLogout}>Đăng xuất</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                                 : <Nav.Link title="Go to login" href="/login" className="text-uppercase font-weight-bold text-white border border-dark">
                                     LOG IN
                             </Nav.Link>

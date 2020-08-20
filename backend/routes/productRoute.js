@@ -42,54 +42,64 @@ router.post('/:id/reviews', isAuth, async (req, res) => {
         res.status(404).send({ message: 'Product Not Found' });
     }
 });
-// router.post("/", isAuth, isAdmin, async (req, res) => {
-//     const product = new Product({
-//         name: req.body.name,
-//         price: req.body.price,
-//         image: req.body.image,
-//         brand: req.body.brand,
-//         category: req.body.category,
-//         countInStock: req.body.countInStock,
-//         description: req.body.description,
-//         rating: req.body.rating,
-//         numReviews: req.body.numReviews
-//     });
 
-//     const newProduct = await product.save();
-//     if (newProduct) {
-//         return res.status(201).send({ message: "New product created", data: newProduct });
-//     }
-//     return res.status(500).send({ message: "Error in Creating product." });
-// });
+router.post("/", isAuth, isAdmin, async (req, res) => {
+    const product = new Product({
+        prdName: req.body.prdName,
+        categoryID: req.body.categoryID,
+        prdImage: req.body.prdImage,
+        prdBrand: req.body.prdBrand,
+        pricePromotion: req.body.pricePromotion,
+        priceNormal: req.body.priceNormal,
+        categoryName: req.body.categoryName,
+        countInStock: req.body.countInStock,
+        description: req.body.description,
+        prdCreatedAt: req.body.prdCreatedAt,
+        prdUpdatedAt: req.body.prdCreatedAt,
+        specifications: {...req.body.specifications},
+        reviews: []
+    });
 
-// router.put("/:id", isAuth, isAdmin, async (req, res) => {
-//     const productId = req.params.id;
-//     const product = await Product.findOne({ _id: productId });
+    const newProduct = await product.save();
+    if (newProduct) {
+        return res.status(201).send({ message: "New product created", data: newProduct });
+    }
+    return res.status(500).send({ message: "Error in Creating product." });
+});
 
-//     if (product) {
-//         product.name = req.body.name;
-//         product.price = req.body.price;
-//         product.image = req.body.image;
-//         product.brand = req.body.brand;
-//         product.category = req.body.category;
-//         product.countInStock = req.body.countInStock;
-//         product.description = req.body.description;
-//         const updatedProduct = await product.save();
-//         if (updatedProduct) {
-//             return res.status(200).send({ message: "Product Updates", data: updatedProduct });
-//         }
-//     }
-//     return res.status(500).send({ message: "Error in Updating product." });
-// });
+router.put("/:id", isAuth, isAdmin, async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findOne({ _id: productId });
 
-// router.delete("/:id", isAuth, isAdmin, async (req, res) => {
-//     const deletedProduct = await Product.findById(req.params.id);
-//     if (deletedProduct) {
-//         await deletedProduct.remove();
-//         res.send({ message: "Product Deleted." });
-//     } else
-//         res.send("Error in Deletion.")
-// });
+    if (product) {
+        product.prdName = req.body.prdName ? req.body.prdName : product.prdName;
+        product.categoryID = req.body.categoryID ? req.body.categoryID : product.categoryID;
+        product.prdImage = req.body.prdImage ? req.body.prdImage : product.prdImage;
+        product.prdBrand = req.body.prdBrand ? req.body.prdBrand : product.prdBrand;
+        product.pricePromotion = req.body.pricePromotion >= 0 ? req.body.pricePromotion : product.pricePromotion;
+        product.priceNormal = req.body.priceNormal > 0 ? req.body.priceNormal : product.priceNormal;
+        product.categoryName = req.body.categoryName ? req.body.categoryName : product.categoryName;
+        product.countInStock = req.body.countInStock >= 0 ? req.body.countInStock : product.countInStock;
+        product.description = req.body.description;
+        product.prdUpdatedAt = req.body.prdCreatedAt ? req.body.prdCreatedAt : product.prdUpdatedAt;
+        product.specifications = {...req.body.specifications};
+
+        const updatedProduct = await product.save();
+        if (updatedProduct) {
+            return res.status(200).send({ message: "Product Updates", data: updatedProduct });
+        }
+    }
+    return res.status(500).send({ message: "Error in Updating product." });
+});
+
+router.delete("/:id", isAuth, isAdmin, async (req, res) => {
+    const deletedProduct = await Product.findById(req.params.id);
+    if (deletedProduct) {
+        await deletedProduct.remove();
+        res.send({ message: "Product Deleted." });
+    } else
+        res.send("Error in Deletion.")
+});
 
 
 // router.get("/createproduct", async (req, res) => {

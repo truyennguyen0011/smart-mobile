@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Slider from '../components/Slider/Slider';
-import ProductSelling from '../components/ProductSelling/ProductSelling';
+import ProductList from '../components/ProductList/ProductList';
 import { listBanners, listSellingPhones, listSellingLaptops } from '../actions/sellingActions';
 import { Spinner, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -35,7 +35,7 @@ const HomePage = (props) => {
     return <div className="position-relative">
         <Slider data={banners} error={errorBanner} />
         {
-            loadingPhoneSelling === false && phoneSelling ? <ProductSelling
+            loadingPhoneSelling === false && phoneSelling ? <ProductList
                 data={phoneSelling}
                 title="Điện thoại nổi bật"
                 categoryProduct="/phone"
@@ -56,7 +56,7 @@ const HomePage = (props) => {
         </Container>
 
         {
-            loadingLaptopSelling === false && laptopSelling ? <ProductSelling
+            loadingLaptopSelling === false && laptopSelling ? <ProductList
                 data={laptopSelling}
                 title="Laptop bán chạy"
                 categoryProduct="/laptop"

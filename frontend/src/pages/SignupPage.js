@@ -49,7 +49,7 @@ function SignupPage(props) {
         fd.append('image', file);
         setUploading(true);
         Axios
-            .post('/api/uploads', fd, {
+            .post('/api/uploads/user', fd, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -134,6 +134,7 @@ function SignupPage(props) {
                                 <Form.Control
                                     name="avatar"
                                     type="file"
+                                    accept="image/png, image/jpeg"
                                     onChange={uploadFileHandler}
                                 />
                             </Form.Group>

@@ -2,13 +2,13 @@ import React from 'react';
 import { Container, Card, Spinner, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
-import './ProductSelling.css';
+import './ProductList.css';
 
 
-const ProductSelling = (props) => {
+const ProductList = (props) => {
 
     const { data } = props;
-
+console.log(data);
     return (
         <Container className="px-3">
             <div className="bg-white mx-0 my-3 py-3">
@@ -19,11 +19,16 @@ const ProductSelling = (props) => {
                         </h3>
                     </Col>
                     <Col className="viewAllPrd" lg={6}>
-                        <Link to={props.categoryProduct}>
-                            Xem tất cả
-                            </Link>
+                        {
+                            props.categoryProduct ? <Link to={props.categoryProduct}>
+                                Xem tất cả
+                            </Link> : <div></div>
+                        }
                     </Col>
                 </Row>
+                {
+                    data.length === 0 ? <Row className="h-400"></Row> : <Row></Row>
+                }
                 <Row className="pl-3 pb-3">
                     {data ? data.map(
                         item => (
@@ -86,4 +91,4 @@ const ProductSelling = (props) => {
     );
 };
 
-export default ProductSelling;
+export default ProductList;

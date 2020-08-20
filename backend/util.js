@@ -10,7 +10,7 @@ const getToken = (user) => {
         },
         config.JWT_SECRET,
         {
-            expiresIn: '48h',
+            expiresIn: '7d',
         }
     );
 };
@@ -34,7 +34,6 @@ const isAuth = (req, res, next) => {
 };
 
 const isAdmin = (req, res, next) => {
-    console.log(req.user);
     if (req.user && req.user.isAdmin) {
         return next();
     }

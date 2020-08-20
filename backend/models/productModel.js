@@ -29,8 +29,7 @@ const specificationSchema = new mongoose.Schema({
 const productSchema = new mongoose.Schema({
     prdName: { type: String, required: true, unique: true, dropDups: true },
     categoryID: { type: String, required: true },
-    prdLink: { type: String, required: true },
-    prdImage: { type: String, required: true },
+    prdImage: { type: String, required: false },
     prdBrand: { type: String, required: true },
     pricePromotion: { type: Number, required: false, default: 0 },
     priceNormal: { type: Number, required: true, default: 0 },

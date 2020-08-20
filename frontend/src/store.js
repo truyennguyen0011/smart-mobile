@@ -3,30 +3,41 @@ import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
 // import { productListReducer, productDetailsReducer } from './reducers/productReducers';
 import { bannerListReducer, phoneSellingListReducer, laptopSellingListReducer } from './reducers/sellingReducer';
-import { productDetailsReducer, productReviewSaveReducer } from './reducers/productReducer';
-import { userLoginReducer, userSignupReducer } from './reducers/userReducer';
+import { productDetailsReducer, productSaveReducer ,productReviewSaveReducer, productListReducer, productDeleteReducer } from './reducers/productReducer';
+import { userLoginReducer, userSignupReducer, userUpdatePasswordReducer, userUpdateInfoReducer } from './reducers/userReducer';
 import { cartReducer } from './reducers/cartReducers';
+import { adminLoginReducer } from './reducers/adminReducer';
+import { categoryListReducer } from './reducers/categoryReducer';
 
 const userInfo = Cookie.getJSON('userInfo') || null;
+const adminInfo = Cookie.getJSON('adminInfo') || null;
 // const cartItems = [];
 
 
 const initialState = {
     //, shipping: {}, payment: {} 
     userLogin: { userInfo },
+    adminLogin: { adminInfo },
     // cart: { cartItems }
 };
 
 const reducer = combineReducers({
     userLogin: userLoginReducer,
+    adminLogin: adminLoginReducer,
     userSignup: userSignupReducer,
     bannerList: bannerListReducer,
     phoneSellingList: phoneSellingListReducer,
     laptopSellingList: laptopSellingListReducer,
-    // productList: productListReducer,
+    productList: productListReducer,
+    categoryList: categoryListReducer,
     productDetails: productDetailsReducer,
+    productSave: productSaveReducer,
     cart: cartReducer,
     productReviewSave: productReviewSaveReducer,
+    userUpdPass: userUpdatePasswordReducer,
+    userUpdInfo: userUpdateInfoReducer,
+    productSave: productSaveReducer,
+    productDelete: productDeleteReducer
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

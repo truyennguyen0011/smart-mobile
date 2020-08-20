@@ -5,12 +5,14 @@ import path from 'path';
 
 import config from './config';
 import userRoute from './routes/userRoute';
+import adminRoute from './routes/adminRoute';
 import productRoute from './routes/productRoute';
 import orderDetailsRoute from './routes/orderDetailsRoute';
 import bannerRoute from './routes/bannerRoute';
 import phoneSellingRoute from './routes/phoneSellingRoute';
 import laptopSellingRoute from './routes/laptopSellingRoute';
 import uploadRoute from './routes/uploadRoute';
+import categoryRoute from './routes/categoryRoute';
 
 const mongodbUrl = config.MONGODB_URL;
 mongoose.connect(mongodbUrl, {
@@ -25,6 +27,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/uploads', uploadRoute);
 app.use('/api/users', userRoute);
+app.use('/api/admin', adminRoute);
+app.use('/api/categories', categoryRoute);
 app.use('/api/products', productRoute);
 app.use('/api/orderdetails', orderDetailsRoute);
 app.use('/api/getBestSellingBanner', bannerRoute);

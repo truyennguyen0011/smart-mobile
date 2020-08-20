@@ -1,4 +1,9 @@
 #root {
   background: #f8f9fa;
   height: 100%;
+  position: relative;
+}
+
+.main {
+  background: #f8f9fa;
 }
