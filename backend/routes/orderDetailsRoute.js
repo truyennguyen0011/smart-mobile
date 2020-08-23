@@ -63,10 +63,19 @@ router.put("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
     const deletedOrderDetails = await OrderDetails.findById(req.params.id);
-    console.log(deletedOrderDetails);
     if (deletedOrderDetails) {
         await deletedOrderDetails.remove();
-        res.send({ data: deletedOrderDetails._id,message: 'Product Deleted' });
+        res.send({ data: deletedOrderDetails._id, message: 'Product Deleted' });
+    } else {
+        res.send('Error in Deletion.');
+    }
+});
+
+router.delete("/cart/:id", async (req, res) => {
+    const deletedOrderDetails = await OrderDetails.find({ userID: req.params.id });
+    if (deletedOrderDetails) {
+        await deletedOrderDetails.map(x=>x.remove());
+        res.send({ data: deletedOrderDetails._id, message: 'Cart Deleted' });
     } else {
         res.send('Error in Deletion.');
     }

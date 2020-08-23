@@ -8,6 +8,7 @@ import { userLoginReducer, userSignupReducer, userUpdatePasswordReducer, userUpd
 import { cartReducer } from './reducers/cartReducers';
 import { adminLoginReducer } from './reducers/adminReducer';
 import { categoryListReducer } from './reducers/categoryReducer';
+import { orderCreateReducer } from './reducers/orderReducer';
 
 const userInfo = Cookie.getJSON('userInfo') || null;
 const adminInfo = Cookie.getJSON('adminInfo') || null;
@@ -37,7 +38,8 @@ const reducer = combineReducers({
     userUpdPass: userUpdatePasswordReducer,
     userUpdInfo: userUpdateInfoReducer,
     productSave: productSaveReducer,
-    productDelete: productDeleteReducer
+    productDelete: productDeleteReducer,
+    orderCreate: orderCreateReducer,
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

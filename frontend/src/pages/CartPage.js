@@ -22,9 +22,9 @@ const CartPage = (props) => {
 
   useEffect(() => {
     if (userID) {
-      dispatch(getToCart(userID));
+        dispatch(getToCart(userID));
     }
-  }, []);
+}, []);
 
   const handleRemoveFromCart = (e) => {
     dispatch(removeFromCart(e.target.id));

@@ -13,6 +13,7 @@ import phoneSellingRoute from './routes/phoneSellingRoute';
 import laptopSellingRoute from './routes/laptopSellingRoute';
 import uploadRoute from './routes/uploadRoute';
 import categoryRoute from './routes/categoryRoute';
+import orderRoute from './routes/orderRoute';
 
 const mongodbUrl = config.MONGODB_URL;
 mongoose.connect(mongodbUrl, {
@@ -25,6 +26,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/api/orders', orderRoute);
 app.use('/api/uploads', uploadRoute);
 app.use('/api/users', userRoute);
 app.use('/api/admin', adminRoute);

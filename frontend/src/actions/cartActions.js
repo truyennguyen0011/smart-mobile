@@ -55,10 +55,22 @@ const removeFromCart = (id) => async (dispatch) => {
     console.log(error);
   }
 }
+const removeCart = (id) => async (dispatch) => {
+  try {
+    const { data } = await Axios.delete(
+      "/api/orderdetails/cart/" + id
+    );
+    dispatch({
+      type: CART_REMOVE_ITEM, payload: id
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 // const saveShipping = (data) => (dispatch) => {
 //   dispatch({ type: CART_SAVE_SHIPPING, payload: data });
 // }
 // const savePayment = (data) => (dispatch) => {
 //   dispatch({ type: CART_SAVE_PAYMENT, payload: data });
 // }
-export { addToCart, getToCart, putToCart, removeFromCart }
+export { addToCart, getToCart, putToCart, removeFromCart, removeCart }

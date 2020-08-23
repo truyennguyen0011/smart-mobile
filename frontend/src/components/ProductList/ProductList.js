@@ -27,7 +27,15 @@ console.log(data);
                     </Col>
                 </Row>
                 {
-                    data.length === 0 ? <Row className="h-400"></Row> : <Row></Row>
+                    data.length === 0 ? <div id="notfound" className="p-3" style={{ textAlign: "center" }}>
+                    <div class="notfound">
+                        <div class="notfound-404">
+                            <h1>Oops!</h1>
+                            <h2>Không có sản phẩm nào!</h2>
+                        </div>
+                        <Link to="/">Go TO Homepage</Link>
+                    </div>
+                </div> : <Row></Row>
                 }
                 <Row className="pl-3 pb-3">
                     {data ? data.map(
