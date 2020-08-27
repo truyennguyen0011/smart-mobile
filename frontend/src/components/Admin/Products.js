@@ -551,53 +551,55 @@ const Products = () => {
             </Col>
         </Row>
         <Row>
-            <Table className="w-100" responsive="sm" size="sm" striped bordered hover variant="dark">
-                <thead>
-                    <tr>
-                        <th style={{ width: "5%" }}>STT</th>
-                        <th style={{ width: "23%" }}>Tên sản phẩm</th>
-                        <th style={{ width: "10%" }}>Danh mục</th>
-                        <th style={{ width: "12%" }}>Thương hiệu</th>
-                        <th style={{ width: "10%" }}>Hình ảnh</th>
-                        <th style={{ width: "20%" }}>Thông tin</th>
-                        <th style={{ width: "20%" }}>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        products ? products.map((item, i) =>
-                            <tr key={item._id}>
-                                <td>{i + 1}</td>
-                                <td>{item.prdName}</td>
-                                <td>{item.categoryName}</td>
-                                <td>{item.prdBrand}</td>
-                                <td align="center">
-                                    <img className="pt-2" src={item.prdImage} width="50px" />
-                                </td>
-                                <td>
-                                    <ul>
-                                        <li style={{ listStyleType: "disc" }}>Giá gốc: {item.priceNormal}</li>
-                                        <li style={{ listStyleType: "disc" }}>Giá KM: {item.pricePromotion}</li>
-                                        <li style={{ listStyleType: "disc" }}>Tồn kho: {item.countInStock}</li>
-                                    </ul>
-                                </td>
-                                <td align="center">
-                                    <Button onClick={(e) => editProductHandler(e, item)} className="mt-1 mr-2">Sửa</Button>
-                                    <Button onClick={() => deleteProductHandler(item)} variant="danger" className="mt-1">Xóa</Button>
-                                </td>
-                            </tr>
-                        ) : <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                    }
-                </tbody>
-            </Table>
+            <div className="table-responsive">
+                <Table className="w-100" size="sm" striped bordered hover variant="dark">
+                    <thead>
+                        <tr>
+                            <th style={{ width: "5%" }}>STT</th>
+                            <th style={{ width: "23%" }}>Tên sản phẩm</th>
+                            <th style={{ width: "10%" }}>Danh mục</th>
+                            <th style={{ width: "12%" }}>Thương hiệu</th>
+                            <th style={{ width: "10%" }}>Hình ảnh</th>
+                            <th style={{ width: "25%" }}>Thông tin</th>
+                            <th style={{ width: "15%" }}>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            products ? products.map((item, i) =>
+                                <tr key={item._id}>
+                                    <td>{i + 1}</td>
+                                    <td>{item.prdName}</td>
+                                    <td>{item.categoryName}</td>
+                                    <td>{item.prdBrand}</td>
+                                    <td align="center">
+                                        <img className="pt-2" src={item.prdImage} width="50px" />
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            <li style={{ listStyleType: "disc" }}>Giá gốc: {item.priceNormal}</li>
+                                            <li style={{ listStyleType: "disc" }}>Giá KM: {item.pricePromotion}</li>
+                                            <li style={{ listStyleType: "disc" }}>Tồn kho: {item.countInStock}</li>
+                                        </ul>
+                                    </td>
+                                    <td align="center">
+                                        <Button onClick={(e) => editProductHandler(e, item)} className="mt-1 mr-2">Sửa</Button>
+                                        <Button onClick={() => deleteProductHandler(item)} variant="danger" className="mt-1">Xóa</Button>
+                                    </td>
+                                </tr>
+                            ) : <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                        }
+                    </tbody>
+                </Table>
+            </div>
         </Row>
     </Container>
 }

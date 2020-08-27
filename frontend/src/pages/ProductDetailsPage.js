@@ -9,7 +9,7 @@ import Reviews from '../components/Reviews/Reviews';
 import NumberFormat from 'react-number-format';
 import { addToCart } from '../actions/cartActions';
 import Rating from '../components/Rating/Rating';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 const ProductDetailsPage = (props) => {
 
@@ -44,28 +44,33 @@ const ProductDetailsPage = (props) => {
     }
 
     const handleBuyNow = () => {
-        dispatch(addToCart(
-            newProduct._id,
-            userInfo._id,
-            newProduct.prdImage,
-            newProduct.prdName,
-            qty,
-            newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal,
-            qty * (newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal)
-        ));
+        !userInfo ? props.history.push("/login") :
+            dispatch(addToCart(
+                newProduct._id,
+                userInfo._id,
+                newProduct.prdImage,
+                newProduct.prdName,
+                qty,
+                newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal,
+                qty * (newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal)
+            ));
         props.history.push('/cart');
     };
     const handleAddToCart = () => {
-        alert("Sản phẩm đã được thêm vào giỏ hàng của bạn!")
-        dispatch(addToCart(
-            newProduct._id,
-            userInfo._id,
-            newProduct.prdImage,
-            newProduct.prdName,
-            qty,
-            newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal,
-            qty * (newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal)
-        ));
+        if (!userInfo) {
+            props.history.push("/login")
+        } else if (newProduct) {
+            alert("Sản phẩm đã được thêm vào giỏ hàng của bạn!")
+            dispatch(addToCart(
+                newProduct._id,
+                userInfo._id,
+                newProduct.prdImage,
+                newProduct.prdName,
+                qty,
+                newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal,
+                qty * (newProduct.pricePromotion > 0 ? newProduct.pricePromotion : newProduct.priceNormal)
+            ));
+        }
     };
 
     return <Container className="position-relative">
@@ -93,12 +98,12 @@ const ProductDetailsPage = (props) => {
                         </div>
                     </Row>
                     <Row className="border-left border-right border-bottom border-success" xs={12}>
-                        <Col sm={6} md={6} lg={4} xs={4} className="py-3">
+                        <Col xs={12} sm={6} md={6} lg={4} xl={4} className="py-3">
                             <Image width="100%" src={newProduct.prdImage} />
                         </Col>
-                        <Col sm={6} md={6} lg={3} xs={3} className="pt-3 ">
+                        <Col xs={12} sm={6} md={6} lg={3} xl={3} className="pt-3">
                             <Row xl={12} className="px-0">
-                                <Col xs={12} md={6} lg={6} xs={5} className="price price-promo py-3">
+                                <Col xs={12} md={6} lg={6} xl={5} className="price price-promo py-3">
                                     {newProduct.pricePromotion > 0 ?
                                         <NumberFormat
                                             value={newProduct.pricePromotion}
@@ -114,7 +119,7 @@ const ProductDetailsPage = (props) => {
                                     {"₫"}
                                 </Col>
 
-                                <Col xs={12} md={6} lg={6} xs={5} className="price price-nor px-0 py-3">
+                                <Col xs={12} md={6} lg={6} xl={5} className="price price-nor px-0 py-3">
                                     {
                                         newProduct.pricePromotion > 0 ?
                                             <NumberFormat
@@ -148,7 +153,7 @@ const ProductDetailsPage = (props) => {
                                 </Card>
                             </Row>
                             <Row xl={12} className="my-3">
-                                <div className="count-prd">
+                                <div className="count-prd pl-3">
                                     <label>Số lượng</label>
                                     <div>
                                         {
@@ -165,7 +170,7 @@ const ProductDetailsPage = (props) => {
                                     </div>
                                 </div>
                             </Row>
-                            <Row xl={12} className="my-3">
+                            <Row xl={12} className="my-3 pl-3">
                                 <div className="count-prd">
                                     <label>Kho</label>
                                     <div>
@@ -185,120 +190,122 @@ const ProductDetailsPage = (props) => {
                             </Button>
                             </Row>
                         </Col>
-                        <Col sm={6} md={6} lg={5} xs={5}>
-                            <Table className="mt-3" striped bordered hover size="sm">
-                                <thead>
-                                    <tr>
-                                        <th colSpan={2}>Thông số kỹ thuật</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        newProduct.specifications.screen ?
-                                            <tr>
-                                                <td>Màn hình</td>
-                                                <td>{newProduct.specifications.screen}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.cardScreen ?
-                                            <tr>
-                                                <td>Card Màn hình</td>
-                                                <td>{newProduct.specifications.cardScreen}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.cpu ?
-                                            <tr>
-                                                <td>CPU</td>
-                                                <td>{newProduct.specifications.cpu}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.gpu ?
-                                            <tr>
-                                                <td>GPU</td>
-                                                <td>{newProduct.specifications.gpu}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.ram ?
-                                            <tr>
-                                                <td>RAM</td>
-                                                <td>{newProduct.specifications.ram}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.rom ?
-                                            <tr>
-                                                <td>ROM</td>
-                                                <td>{newProduct.specifications.rom}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.operatingSys ?
-                                            <tr>
-                                                <td>Hệ điều hành</td>
-                                                <td>{newProduct.specifications.operatingSys}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.origin ?
-                                            <tr>
-                                                <td>Xuất xứ</td>
-                                                <td>{newProduct.specifications.origin}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.mfg ?
-                                            <tr>
-                                                <td>Năm sản xuất</td>
-                                                <td>{newProduct.specifications.mfg}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.camFront ?
-                                            <tr>
-                                                <td>Camera trước</td>
-                                                <td>{newProduct.specifications.camFront}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.camRear ?
-                                            <tr>
-                                                <td>Camera sau</td>
-                                                <td>{newProduct.specifications.camRear}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.sim ?
-                                            <tr>
-                                                <td>Thẻ SIM</td>
-                                                <td>{newProduct.specifications.sim}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                    {
-                                        newProduct.specifications.battery ?
-                                            <tr>
-                                                <td>Dung lượng PIN</td>
-                                                <td>{newProduct.specifications.battery}</td>
-                                            </tr> :
-                                            <tr></tr>
-                                    }
-                                </tbody>
-                            </Table>
+                        <Col xs={12} sm={12} md={12} lg={5} xl={5}>
+                            <div className="table-responsive">
+                                <Table className="mt-3" striped bordered hover size="sm">
+                                    <thead>
+                                        <tr>
+                                            <th colSpan={2}>Thông số kỹ thuật</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            newProduct.specifications.screen ?
+                                                <tr>
+                                                    <td>Màn hình</td>
+                                                    <td>{newProduct.specifications.screen}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.cardScreen ?
+                                                <tr>
+                                                    <td>Card Màn hình</td>
+                                                    <td>{newProduct.specifications.cardScreen}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.cpu ?
+                                                <tr>
+                                                    <td>CPU</td>
+                                                    <td>{newProduct.specifications.cpu}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.gpu ?
+                                                <tr>
+                                                    <td>GPU</td>
+                                                    <td>{newProduct.specifications.gpu}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.ram ?
+                                                <tr>
+                                                    <td>RAM</td>
+                                                    <td>{newProduct.specifications.ram}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.rom ?
+                                                <tr>
+                                                    <td>ROM</td>
+                                                    <td>{newProduct.specifications.rom}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.operatingSys ?
+                                                <tr>
+                                                    <td>Hệ điều hành</td>
+                                                    <td>{newProduct.specifications.operatingSys}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.origin ?
+                                                <tr>
+                                                    <td>Xuất xứ</td>
+                                                    <td>{newProduct.specifications.origin}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.mfg ?
+                                                <tr>
+                                                    <td>Năm sản xuất</td>
+                                                    <td>{newProduct.specifications.mfg}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.camFront ?
+                                                <tr>
+                                                    <td>Camera trước</td>
+                                                    <td>{newProduct.specifications.camFront}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.camRear ?
+                                                <tr>
+                                                    <td>Camera sau</td>
+                                                    <td>{newProduct.specifications.camRear}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.sim ?
+                                                <tr>
+                                                    <td>Thẻ SIM</td>
+                                                    <td>{newProduct.specifications.sim}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                        {
+                                            newProduct.specifications.battery ?
+                                                <tr>
+                                                    <td>Dung lượng PIN</td>
+                                                    <td>{newProduct.specifications.battery}</td>
+                                                </tr> :
+                                                <tr></tr>
+                                        }
+                                    </tbody>
+                                </Table>
+                            </div>
                         </Col>
                     </Row>
 

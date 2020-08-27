@@ -28,38 +28,40 @@ const Categories = () => {
             </Col>
         </Row>
         <Row xl={12}>
-            <Table responsive="sm" size="sm" striped bordered hover variant="dark">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>ID</th>
-                        <th>Danh mục</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        categories ? categories.map((item, i) =>
-                            <tr key={item._id}>
-                                <td>{i + 1}</td>
-                                <td>{item._id}</td>
-                                <td>{item.categoryName}</td>
-                                <td align="center">
-                                    <div>
-                                        <Button className="mt-1 mr-2">Sửa</Button>
-                                        <Button variant="danger" className="mt-1">Xóa</Button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ) : <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                    }
-                </tbody>
-            </Table>
+            <div className="table-responsive">
+                <Table size="sm" striped bordered hover variant="dark">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>ID</th>
+                            <th>Danh mục</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            categories ? categories.map((item, i) =>
+                                <tr key={item._id}>
+                                    <td>{i + 1}</td>
+                                    <td>{item._id}</td>
+                                    <td>{item.categoryName}</td>
+                                    <td align="center">
+                                        <div>
+                                            <Button className="mt-1 mr-2">Sửa</Button>
+                                            <Button variant="danger" className="mt-1">Xóa</Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                        }
+                    </tbody>
+                </Table>
+            </div>
         </Row>
     </Container>
 }
